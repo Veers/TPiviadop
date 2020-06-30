@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.gnupunk.client.entity.UserEntity;
+import ru.gnupunk.client.model.request.LoginUserRequest;
 import ru.gnupunk.client.model.request.RegisterUserRequest;
 import ru.gnupunk.client.repository.UserRepository;
 import ru.gnupunk.client.service.UserService;
@@ -42,5 +43,12 @@ public class UserServiceImpl implements UserService {
             //TODO send email with confirmation
         }
         return userEntity;
+    }
+
+    @Override
+    @Transactional
+    public boolean login(LoginUserRequest loginUserRequest) {
+        Optional<UserEntity> result = userRepository.findByEmailAndPassword(loginUserRequest.getEmail(), loginUserRequest.getPasswordHash());
+        return result.isPresent();
     }
 }

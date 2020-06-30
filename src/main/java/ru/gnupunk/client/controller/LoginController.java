@@ -1,4 +1,4 @@
-package ru.gnupunk.client.network.controller;
+package ru.gnupunk.client.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import ru.gnupunk.client.model.request.LoginUserRequest;
 import ru.gnupunk.client.model.request.RegisterUserRequest;
 import ru.gnupunk.client.service.UserService;
 
@@ -18,9 +19,16 @@ public class LoginController {
     @Autowired
     UserService userService;
 
-    @PostMapping("/login")
-    public String login() {
-        return "login";
+    @PostMapping(value = "/login", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity login(@RequestBody LoginUserRequest loginUserRequest) {
+        logger.info("email: " + loginUserRequest.getEmail() + " pass: " + loginUserRequest.getPasswordHash());
+        boolean isLogin = userService.login(loginUserRequest);
+        if (isLogin) {
+            return ResponseEntity.ok()
+                    .body("Year of birth cannot be in the future");
+        } else {
+            return ResponseEntity.status(401).body("NO USER");
+        }
     }
 
     @PostMapping("/forgot")

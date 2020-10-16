@@ -1,0 +1,19 @@
+###
+POST localhost:8087/user/new
+Content-Type: application/json
+
+{
+  "username": "kfwrelelf",
+  "password": "4321",
+  "rPassword": "4321",
+  "email": "test2323@test.ru"
+}
+
+###
+POST localhost:8087/user/login
+Content-Type: application/json
+
+{
+  "username": "test2",
+  "password": "123"
+}
